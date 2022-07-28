@@ -386,11 +386,21 @@ void tenth(int fd){
 
 void menu(int fd) {
     int x = 99;
-    while(x != 0)
-    {
-        printf("\n * Menú * ");
-        printf("\nPresiona cero para salir del programa.");
-        printf("\nEscribe el número de la pregunta que deseas seleccionar: ");
+    while(x != 0){
+        printf("\n ----------------- Programa ----------------------------------\n");
+        printf("\nCopia el número de la función: ");
+        printf("\n\n1. Invertir lineas de archivo.");
+        printf("\n2. Barajar aleatoriamente lineas de un archivo.");
+        printf("\n3. ¿Parentesis balanceados?");
+        printf("\n4. Implementación de cola con prioridades.");
+        printf("\n5. Destruir lista completamente.");
+        printf("\n6. Invertir nodos de una lista.");
+        printf("\n7. Concantenar dos listas.");
+        printf("\n8. Rotar n veces lista hacia la derecha.");
+        printf("\n9. Limpiar lista.");
+        printf("\n10. Valor máximo de una lista.");
+        printf("\n\n0. Salir del programa ---------------------------------------\n\n");
+
         scanf("%d", &x);
         switch (x)
         {
@@ -424,8 +434,10 @@ void menu(int fd) {
             case 10:
                 tenth(fd);
                 break;
+            default:
+                printf("Opción seleccionada, INCORRECTA.");
+                break;
         }
-        printf("\nLa opción seleccionada fue %d.\n",x);
     }
 }
 

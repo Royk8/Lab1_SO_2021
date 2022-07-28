@@ -1,1 +1,1 @@
-cmd_/home/royk/Downloads/fold/bridge_module_kernel_data_structures/bridge.mod := { echo  /home/royk/Downloads/fold/bridge_module_kernel_data_structures/bridge.o;  echo; } > /home/royk/Downloads/fold/bridge_module_kernel_data_structures/bridge.mod
+cmd_/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.mod := { echo  /home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.o;  echo; } > /home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.mod

@@ -1,2 +1,2 @@
-/home/royk/Downloads/fold/bridge_module_kernel_data_structures/bridge.o
+/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.o
 

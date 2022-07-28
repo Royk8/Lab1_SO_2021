@@ -1,1 +1,1 @@
-cmd_/home/royk/Downloads/fold/bridge_module_kernel_data_structures/modules.order := {   echo /home/royk/Downloads/fold/bridge_module_kernel_data_structures/bridge.ko; :; } | awk '!x[$$0]++' - > /home/royk/Downloads/fold/bridge_module_kernel_data_structures/modules.order
+cmd_/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/modules.order := {   echo /home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.ko; :; } | awk '!x[$$0]++' - > /home/vane/Desktop/Proyect_roy/Lab1_SO_2021/modules.order
