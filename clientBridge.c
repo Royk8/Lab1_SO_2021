@@ -70,7 +70,7 @@ void read_all_messages_stack(int fd){
 	}
 }
 
-void read_all_messages_list(int fd){
+void read_all_list_messages(int fd){
 	char message[100];
 	while(send_empty_command(fd, BRIDGE_STATE_L) > 0){
 	    read_message(fd, BRIDGE_R_L, message);
@@ -96,10 +96,10 @@ void read_all_queue_messages(int fd){
     }
 }
 
-void firstPoint(int fd) {
+void first(int fd) {
     char filePath[100];
-    printf("\n1. Reverse the lines of a text file.");
-    printf("\n   Input the file path: ");
+    printf("\n1. Invertir el orden de los datos.");
+    printf("\n   Ingresa el nombre del archivo, con extension: ");
     scanf("%s", filePath);
 
     FILE * fp;
@@ -109,15 +109,15 @@ void firstPoint(int fd) {
 
     fp = fopen(filePath, "r");
     if (fp == NULL) {
-        perror("First point open file.");
+        perror("Error al abrir archivo.");
     }
 
-    printf("\n File content:\n");
+    printf("\n Contenido del archivo:\n");
     while ((read = getline(&line, &len, fp)) != -1) {
         printf("%s", line);
         write_message(fd, BRIDGE_W_S, line);
     }
-    printf("\n Reversed file:\n");
+    printf("\n Archivo invertido:\n");
     read_all_messages_stack(fd);
 
     fclose(fp);
@@ -125,7 +125,23 @@ void firstPoint(int fd) {
         free(line);
 }
 
-int thirdPoint(int fd){
+void second(int fd){
+    char filePath[100];
+    printf("\n1. Aleatorizar el orden de la lista");
+    printf("\n   Ingresa el nombre del archivo");
+    scanf("%s", filePath);
+    FILE * fp;
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    int yo = 0;
+
+    write_message(fd, BRIDGE_W_L,(char *) &filePath);
+    read_message_param(fd, BRIDGE_R_L, &yo);
+    printf("ESTE NO ESSTA TERMINADO");
+}
+
+int third(int fd){
     char filePath[100];
     printf("\n3. Checks if a code is balanced.");
     printf("\n   Input the file path: ");
@@ -176,7 +192,7 @@ int thirdPoint(int fd){
     fclose(filePointer);
 }
 
-void forthPoint(int fd){
+void fourth(int fd){
     printf("\n4. Multi-level Queue.");
     printf("\nLet's add some items.\n");
     char ans[100]; // Just don't init with 0 plz
@@ -210,14 +226,14 @@ void forthPoint(int fd){
     read_all_queue_messages(fd);
 }
 
-void fifthPoint(int fd){
+void fifth(int fd){
     printf("\n5. Destroy list or stack.");
     int ans;
     printf("\nType 1 to destroy the list or 2 to destroy the stack.\n");
     scanf("%d", &ans);
     if(ans == 1){
         send_empty_command(fd, BRIDGE_DESTROY_L);
-        read_all_messages_list(fd);
+        read_all_list_messages(fd);
         printf("\nDone\n");
     } else if (ans == 2){
         send_empty_command(fd, BRIDGE_DESTROY_S);
@@ -228,7 +244,7 @@ void fifthPoint(int fd){
     }
 }
 
-void sixthPoint(int fd)
+void sixth(int fd)
 {
     printf("\n6. Invert list.");
     printf("\nLet's add some items.\n");
@@ -245,10 +261,10 @@ void sixthPoint(int fd)
     }
     printf("\nInverted list:\n");
     send_empty_command(fd, BRIDGE_INVERT_L);
-    read_all_messages_list(fd);
+    read_all_list_messages(fd);
 }
 
-void seventhPoint(int fd)
+void seventh(int fd)
 {
     printf("\n7. Concat list.");
     printf("\nLet's add some items to the first list.\n");
@@ -277,10 +293,10 @@ void seventhPoint(int fd)
     }
     printf("\nConcatenated lists:\n");
     send_empty_command(fd, BRIDGE_CONCAT_L);
-    read_all_messages_list(fd);
+    read_all_list_messages(fd);
 }
 
-void eighthPoint(int fd){
+void eighth(int fd){
     printf("\n8. Rotate list to right.");
     printf("\nLet's add some items to the first list.\n");
     char ans[100]; // Just don't init with 0 plz
@@ -296,10 +312,10 @@ void eighthPoint(int fd){
     }
     printf("Rotated list.\n");
     send_empty_command(fd, BRIDGE_ROTATE_L);
-    read_all_messages_list(fd);
+    read_all_list_messages(fd);
 }
 
-void ninethPoint(int fd){
+void ninth(int fd){
     printf("\n9. Delete duplicates on the list.");
     printf("\nLet's add some items to the first list.\n");
     char ans[100]; // Just don't init with 0 plz
@@ -313,10 +329,10 @@ void ninethPoint(int fd){
         }
     }
     printf("\nCleaned list:\n");
-    read_all_messages_list(fd);
+    read_all_list_messages(fd);
 }
 
-void tenthPoint(int fd){
+void tenth(int fd){
     printf("\n10. Return the greatest value on the list.");
     printf("\nLet's add some items to the first list.\n");
     char ans[100]; // Just don't init with 0 plz
@@ -329,7 +345,7 @@ void tenthPoint(int fd){
         }
     }
     printf("\nSu lista depurada:\n");
-    read_all_messages_list(fd);
+    read_all_list_messages(fd);
     // char  major[100];
     // read_message(fd, BRIDGE_R_L, major);
    
@@ -348,66 +364,59 @@ void tenthPoint(int fd){
 }
 
 void menu(int fd) {
-    int x = 100; // Just don't init with 0 plz
-    while(x != 0)
-    {
-        printf("\n === First Practice Menu === ");
-        printf("\n0. Exit.");
-        printf("\nInput which point of this practice you wanna try [1, 10]: ");
+    int x = 99;
+    while(x != 0){
+        printf("\n ----------------- Programa ----------------------------------\n");
+        printf("\nCopia el número de la función: ");
+        printf("\n\n1. Invertir lineas de archivo.");
+        printf("\n2. Barajar aleatoriamente lineas de un archivo.");
+        printf("\n3. ¿Parentesis balanceados?");
+        printf("\n4. Implementación de cola con prioridades.");
+        printf("\n5. Destruir lista completamente.");
+        printf("\n6. Invertir nodos de una lista.");
+        printf("\n7. Concantenar dos listas.");
+        printf("\n8. Rotar n veces lista hacia la derecha.");
+        printf("\n9. Limpiar lista.");
+        printf("\n10. Valor máximo de una lista.");
+        printf("\n\n0. Salir del programa ---------------------------------------\n\n");
+
         scanf("%d", &x);
         switch (x)
         {
             case 1:
-                firstPoint(fd);
+                first(fd);
                 break;
             case 2:
-                printf("\nSorry, We didn't make it :/\n");
+                second(fd);
                 break;
             case 3:
-                int result = thirdPoint(fd);
-                if(result == 1){
-                    printf("\nThe file is balanced.\n");
-                } else if(result == 0){
-                    printf("\nThe file is unbalanced.\n");
-                } else if(result == -1){
-                    printf("\nERROR\n");
-                }
+                third(fd);
                 break;
             case 4:
-                forthPoint(fd);
+                fourth(fd);
                 break;
             case 5:
-                fifthPoint(fd);
+                fifth(fd);
                 break;
             case 6:
-                sixthPoint(fd);
+                sixth(fd);
                 break;
             case 7:
-                seventhPoint(fd);
+                seventh(fd);
                 break;
             case 8:
-                eighthPoint(fd);
+                eighth(fd);
                 break;
             case 9:
-                ninethPoint(fd);
+                ninth(fd);
                 break;
             case 10:
-                tenthPoint(fd);
+                tenth(fd);
                 break;
             default:
-                if (x != 0)
-                {
-                    printf("\nError: Segmentation Fault! :/\n");
-                } 
-                else
-                {
-                    printf("\nBye.\n");
-                }
-                
+                printf("Opción seleccionada, INCORRECTA.");
                 break;
         }
-        printf("\nThe selected option was: ");
-        printf("%d\n", x);
     }
 }
 
