@@ -7,14 +7,7 @@
 #include <stdlib.h>
 #include "clientBridge.h"
 
-/*
-* Gabriel Camargo
-* Roy Maestre
-* Vanessa Tocasuche
-*/
-
 void write_struct(int fd, unsigned long command, struct complex_struct * struct_address){
-    printf("Writing message");
     if (ioctl(fd, command, struct_address) == -1){
         perror("Write message error at ioctl");
     }
@@ -26,18 +19,10 @@ void write_message(int fd, unsigned long command, char * message){
     }
 }
 
-
 void read_message(int fd, unsigned long command, char * message){
     if(ioctl(fd, command, message) == -1){
 	perror("Read message error at ioctl");
     }
-}
-
-char * get_message(int fd, unsigned long command, char * message){
-    if(ioctl(fd, command, message) == -1){
-	perror("Read message error at ioctl");
-    }
-    return message;
 }
 
 void read_message_param(int fd, unsigned long command, int * value){
@@ -46,7 +31,6 @@ void read_message_param(int fd, unsigned long command, int * value){
     }else{
         printf("Copy the messsage from the kernel\n");
     }
-    printf(":%c:", *value);
 }
 
 void write_int(int fd, unsigned long command, int * value){
@@ -68,7 +52,7 @@ int send_empty_command(int fd, unsigned long command){
     if(returned_value == -1){
        perror("Send command error at ioctl");
     }else{
-	    return returned_value;
+	return returned_value;
         printf("Command OK to the kernel\n");
     }
 }
@@ -78,7 +62,7 @@ void write_several_messages(int fd){
     write_message(fd, BRIDGE_W_S, "Message 3");
 }
 
-void read_all_messages(int fd){
+void read_all_messages_stack(int fd){
 	char message[100];
 	while(send_empty_command(fd, BRIDGE_STATE_S) > 0){
 	    read_message(fd, BRIDGE_R_S, message);
@@ -86,11 +70,11 @@ void read_all_messages(int fd){
 	}
 }
 
-void read_all_list_messages(int fd){
+void read_all_messages_list(int fd){
 	char message[100];
 	while(send_empty_command(fd, BRIDGE_STATE_L) > 0){
 	    read_message(fd, BRIDGE_R_L, message);
-	    printf("%s\n", message);
+	    printf("%s", message);
 	}
 }
 
@@ -112,18 +96,10 @@ void read_all_queue_messages(int fd){
     }
 }
 
-void read_all_messages_stack(int fd){
-	char message[100];
-	while(send_empty_command(fd, BRIDGE_STATE_S) > 0){
-	    read_message(fd, BRIDGE_R_S, message);
-	    printf("%s", message);
-	}
-}
-
-void first(int fd) {
+void firstPoint(int fd) {
     char filePath[100];
-    printf("\n1. Invertir el orden de los datos.");
-    printf("\n   Ingresa el nombre del archivo, con extension: ");
+    printf("\n1. Reverse the lines of a text file.");
+    printf("\n   Input the file path: ");
     scanf("%s", filePath);
 
     FILE * fp;
@@ -136,41 +112,23 @@ void first(int fd) {
         perror("First point open file.");
     }
 
-    printf("\n Contenido del archivo:\n");
+    printf("\n File content:\n");
     while ((read = getline(&line, &len, fp)) != -1) {
         printf("%s", line);
         write_message(fd, BRIDGE_W_S, line);
     }
-    printf("\n Archivo invertido:\n");
-    read_all_messages(fd);
+    printf("\n Reversed file:\n");
+    read_all_messages_stack(fd);
 
     fclose(fp);
     if (line)
         free(line);
 }
 
-void second(int fd){
+int thirdPoint(int fd){
     char filePath[100];
-    printf("\n1. Aleatorizar el orden de la lista");
-    printf("\n   Ingresa el nombre del archivo");
-    scanf("%s", filePath);
-    FILE * fp;
-    char * line = NULL;
-    size_t len = 0;
-    ssize_t read;
-    int yo = 0;
-
-    write_message(fd, BRIDGE_W_L,(char *) &filePath);
-    read_message_param(fd, BRIDGE_R_L, &yo);
-    printf("ESTE NO ESSTA TERMINADO");
-}
-
-
-
-int realThird(int fd){
-    char filePath[100];
-    printf("\n3. Verifica si los parentesis y las llaves estan balanceadas.");
-    printf("\n   Ingresa el nombre del archivo, con extension: \n");
+    printf("\n3. Checks if a code is balanced.");
+    printf("\n   Input the file path: ");
     scanf("%s", filePath);
     printf("\n file path: %s\n", filePath);
 
@@ -218,131 +176,152 @@ int realThird(int fd){
     fclose(filePointer);
 }
 
-void third(int fd){
-    int result = realThird(fd);
-    if(result == 1){
-        printf("\nESTA BALANCEADO\n");
-    }else if(result == 0){
-        printf("\nESTA DESBALANCEADO\n");
-    } else if(result == -1){
-        printf("\nERROR\n");
-    }
-}
-
-void fourth(int fd){
-    printf("\nLlena tu cola.\n");
+void forthPoint(int fd){
+    printf("\n4. Multi-level Queue.");
+    printf("\nLet's add some items.\n");
     char ans[100]; // Just don't init with 0 plz
     int x = 0;
     while(strcmp(ans, "EXIT") != 0){
-        printf("\nIntroduce la palabra que quieres añadir a la cola o EXIT para salir.\n");
+        printf("\nType the word you want to add to the queue or EXIT.\n");
         scanf("%s", ans);
         printf("\nInput: %s\n", ans);
         if(strcmp(ans, "EXIT") == 0){
             break;
         }
-        printf("\nQue prioridad tiene? Selecciona una ingresando un numero:\n");
-        printf(" 1.Prioridad Alta\n 2.Prioridad Media\n 3.Prioridad Baja\n ");
+        printf("\nWhat's the priority? Type the number to choose one:\n");
+        printf(" 1. High priority.\n 2. Medium priority.\n 3. Low priority.\n ");
         scanf("%d", &x);
         switch(x){
             case 1:
                 write_message(fd, BRIDGE_W_HIGH_PRIOR_Q, ans);
-                printf("\n%s ha sido agregado a la cola con alta prioridad", &ans[0]);
+                printf("\n%s Element succesfully added to the high priority queue.\n", &ans[0]);
                 break;
             case 2:
                 write_message(fd, BRIDGE_W_MIDDLE_PRIOR_Q, ans);
-                printf("\n%s ha sido agregado a la cola con media prioridad", &ans[0]);
+                printf("\n%s Element succesfully added to the medium priority queue", &ans[0]);
                 break;
             case 3:
                 write_message(fd, BRIDGE_W_LOW_PRIOR_Q, ans);
-                printf("\n%s ha sido agregado a la cola con baja prioridad", &ans[0]);
+                printf("\n%s Element succesfully added to the low priority queue", &ans[0]);
                 break;
         }
     }
-    printf("\nEl contenido de la cola de priroridad es:\n");
+    printf("\nThe items printed in according to their priority\n");
     read_all_queue_messages(fd);
 }
 
-void fifth(int fd){
-    printf("\nLlena tu lista.\n");
-    char ans[100];
-    int x = 0;
-    while(strcmp(ans, "EXIT") != 0){
-        printf("\nIntroduce la palabra que quieres añadir a la lista o EXIT para salir.\n");
-        scanf("%s", ans);
-        printf("\nInput: %s\n", ans);
-        if(strcmp(ans, "EXIT") == 0){
-            break;
-        }
-        write_message(fd, BRIDGE_W_L, ans);
-        printf("\n%s ha sido agregado a la lista", &ans[0]);
+void fifthPoint(int fd){
+    printf("\n5. Destroy list or stack.");
+    int ans;
+    printf("\nType 1 to destroy the list or 2 to destroy the stack.\n");
+    scanf("%d", &ans);
+    if(ans == 1){
+        send_empty_command(fd, BRIDGE_DESTROY_L);
+        read_all_messages_list(fd);
+        printf("\nDone\n");
+    } else if (ans == 2){
+        send_empty_command(fd, BRIDGE_DESTROY_S);
+        read_all_messages_stack(fd);
+        printf("\nDone\n");
+    } else {
+        printf("\nERROR\n");
     }
-    printf("Ahora la lista sera borrada, dile adios.");    
-    send_empty_command(fd, BRIDGE_DESTROY_L);
-    read_all_list_messages(fd);
-    send_empty_command(fd, BRIDGE_CREATE_L);
 }
 
-void sixth(int fd)
+void sixthPoint(int fd)
 {
-    printf("\nLlena tu lista.\n");
-    char ans[100];
-    int x = 0;
-    while(strcmp(ans, "EXIT") != 0){
-        printf("\nIntroduce la palabra que quieres añadir a la lista o EXIT para salir.\n");
-        scanf("%s", ans);
-        printf("\nInput: %s\n", ans);
-        if(strcmp(ans, "EXIT") == 0){
-            break;
-        }
-        write_message(fd, BRIDGE_W_L, ans);
-        printf("\n%s ha sido agregado a la lista", &ans[0]);
-    }
-    send_empty_command(fd, BRIDGE_INVERT_L);
-    read_all_list_messages(fd);
-}
-
-void seventh(int fd){
-    send_empty_command(fd, BRIDGE_CONCAT_L);
-    printf("La lista y el stack han sido concatenados.");
-}
-
-void eighth(int fd){
-    read_all_list_messages(fd);
-    char mess1[] = "primero";
-    char mess2[] = "segundo";
-    char mess3[] = "tercero";
-    char mess4[] = "cuarto";
-    char mess5[] = "quinto";
-    char mess6[] = "sexto";
-    char mess7[] = "septimo";
-
-    printf("1: %s\n", &mess1[0]);
-    printf("2: %s\n", &mess2[0]);
-    printf("3: %s\n", &mess3[0]);
-    printf("4: %s\n", &mess4[0]);
-    printf("5: %s\n", &mess5[0]);
-    printf("6: %s\n", &mess6[0]);
-    printf("7: %s\n", &mess7[0]);
-
-    printf("--- Rotating --- \n");
-
-    write_message(fd, BRIDGE_W_L, mess1);
-    write_message(fd, BRIDGE_W_L, mess2);
-    write_message(fd, BRIDGE_W_L, mess3);
-    write_message(fd, BRIDGE_W_L, mess4);
-    write_message(fd, BRIDGE_W_L, mess5);
-    write_message(fd, BRIDGE_W_L, mess6);
-    write_message(fd, BRIDGE_W_L, mess7);
-
-    write_message(fd, BRIDGE_ROTATE_L, mess1);
-    read_all_list_messages(fd);
-}
-
-void ninth(int fd){
-    printf("\nArma la lista.\n");
+    printf("\n6. Invert list.");
+    printf("\nLet's add some items.\n");
     char ans[100]; // Just don't init with 0 plz
     while(strcmp(ans, "EXIT") != 0){
-        printf("\nIntroduce la palabra que quieres añadir a la lista o EXIT para salir.\n");
+        printf("\nType the word you want to add to the list or EXIT.\n");
+        scanf("%s", ans);
+        printf("\nInput: %s\n", ans);
+        if(strcmp(ans, "EXIT") != 0){
+            // CREATE LIST ITEMS LOGIC
+            strcat(ans,"\n");
+            write_message(fd, BRIDGE_W_L, ans);
+        }
+    }
+    printf("\nInverted list:\n");
+    send_empty_command(fd, BRIDGE_INVERT_L);
+    read_all_messages_list(fd);
+}
+
+void seventhPoint(int fd)
+{
+    printf("\n7. Concat list.");
+    printf("\nLet's add some items to the first list.\n");
+    char ans[100]; // Just don't init with 0 plz
+    while(strcmp(ans, "EXIT") != 0){
+        printf("\nType the word you want to add to the list or EXIT.\n");
+        scanf("%s", ans);
+        printf("\nInput: %s\n", ans);
+        if(strcmp(ans, "EXIT") != 0){
+            // CREATE LIST ITEMS LOGIC
+            strcat(ans,"\n");
+            write_message(fd, BRIDGE_W_L, ans);
+        }
+    }
+    printf("\nLet's add some items to the second list.\n");
+    ans[0] = 'n';
+    while(strcmp(ans, "EXIT") != 0){
+        printf("\nType the word you want to add to the list or EXIT.\n");
+        scanf("%s", ans);
+        printf("\nInput: %s\n", ans);
+        if(strcmp(ans, "EXIT") != 0){
+            // CREATE LIST ITEMS LOGIC
+            strcat(ans,"\n");
+            write_message(fd, BRIDGE_W_HIGH_PRIOR_Q, ans);
+        }
+    }
+    printf("\nConcatenated lists:\n");
+    send_empty_command(fd, BRIDGE_CONCAT_L);
+    read_all_messages_list(fd);
+}
+
+void eighthPoint(int fd){
+    printf("\n8. Rotate list to right.");
+    printf("\nLet's add some items to the first list.\n");
+    char ans[100]; // Just don't init with 0 plz
+    while(strcmp(ans, "EXIT") != 0){
+        printf("\nType the word you want to add to the list or EXIT.\n");
+        scanf("%s", ans);
+        printf("\nInput: %s\n", ans);
+        if(strcmp(ans, "EXIT") != 0){
+            // CREATE LIST ITEMS LOGIC
+            strcat(ans,"\n");
+            write_message(fd, BRIDGE_W_L, ans);
+        }
+    }
+    printf("Rotated list.\n");
+    send_empty_command(fd, BRIDGE_ROTATE_L);
+    read_all_messages_list(fd);
+}
+
+void ninethPoint(int fd){
+    printf("\n9. Delete duplicates on the list.");
+    printf("\nLet's add some items to the first list.\n");
+    char ans[100]; // Just don't init with 0 plz
+    while(strcmp(ans, "EXIT") != 0){
+        printf("\nType the word you want to add to the list or EXIT.\n");
+        scanf("%s", ans);
+        printf("\nInput: %s\n", ans);
+        if(strcmp(ans, "EXIT") != 0){
+            strcat(ans,"\n");
+            write_message(fd, BRIDGE_CLEAN_L, ans);
+        }
+    }
+    printf("\nCleaned list:\n");
+    read_all_messages_list(fd);
+}
+
+void tenthPoint(int fd){
+    printf("\n10. Return the greatest value on the list.");
+    printf("\nLet's add some items to the first list.\n");
+    char ans[100]; // Just don't init with 0 plz
+    while(strcmp(ans, "EXIT") != 0){
+        printf("\nType the word you want to add to the list or EXIT.\n");
         scanf("%s", ans);
         printf("\nInput: %s\n", ans);
         if(strcmp(ans, "EXIT") != 0){
@@ -350,94 +329,85 @@ void ninth(int fd){
         }
     }
     printf("\nSu lista depurada:\n");
-    read_all_list_messages(fd);
-}
-
-void tenth(int fd){
-    printf("\nLlena tu lista.\n");
-    char ans[100];
-    int x = 0;
-    while(strcmp(ans, "EXIT") != 0){
-        printf("\nIntroduce la palabra que quieres añadir a la lista o EXIT para salir.\n");
-        scanf("%s", ans);
-        printf("\nInput: %s\n", ans);
-        if(strcmp(ans, "EXIT") == 0){
-            break;
-        }
-        write_message(fd, BRIDGE_W_L, ans);
-        printf("\n%s ha sido agregado a la lista", &ans[0]);
-    }
-//printf("\nSu lista depurada:\n");
-    //read_all_messages_list(fd);
-    char  major[100];
-    read_message(fd, BRIDGE_R_L, major);
+    read_all_messages_list(fd);
+    // char  major[100];
+    // read_message(fd, BRIDGE_R_L, major);
    
-    do{
-        char input[100];
-        read_message(fd, BRIDGE_R_L, input);
-        printf("%s", major);
-        if(strcmp(input,major) > 0)
-        {
-            *major = *input;
+    // do{
+    //     char input[100];
+    //     read_message(fd, BRIDGE_R_L, input);
+        
+    //     if(strcmp(input,major) > 0)
+    //     {
 
-        }
-    }while(send_empty_command(fd, BRIDGE_STATE_L)!=0);
+    //         memcpy(major, input,strlen(input)+1);
+
+    //     }
+    // }while(send_empty_command(fd, BRIDGE_STATE_L)!=0);
+    // printf("\nThe greatest value is: %s\n", major);
 }
 
 void menu(int fd) {
-    int x = 99;
-    while(x != 0){
-        printf("\n ----------------- Programa ----------------------------------\n");
-        printf("\nCopia el número de la función: ");
-        printf("\n\n1. Invertir lineas de archivo.");
-        printf("\n2. Barajar aleatoriamente lineas de un archivo.");
-        printf("\n3. ¿Parentesis balanceados?");
-        printf("\n4. Implementación de cola con prioridades.");
-        printf("\n5. Destruir lista completamente.");
-        printf("\n6. Invertir nodos de una lista.");
-        printf("\n7. Concantenar dos listas.");
-        printf("\n8. Rotar n veces lista hacia la derecha.");
-        printf("\n9. Limpiar lista.");
-        printf("\n10. Valor máximo de una lista.");
-        printf("\n\n0. Salir del programa ---------------------------------------\n\n");
-
+    int x = 100; // Just don't init with 0 plz
+    while(x != 0)
+    {
+        printf("\n === First Practice Menu === ");
+        printf("\n0. Exit.");
+        printf("\nInput which point of this practice you wanna try [1, 10]: ");
         scanf("%d", &x);
         switch (x)
         {
             case 1:
-                first(fd);
+                firstPoint(fd);
                 break;
             case 2:
-                second(fd);
+                printf("\nSorry, We didn't make it :/\n");
                 break;
             case 3:
-                third(fd);
+                int result = thirdPoint(fd);
+                if(result == 1){
+                    printf("\nThe file is balanced.\n");
+                } else if(result == 0){
+                    printf("\nThe file is unbalanced.\n");
+                } else if(result == -1){
+                    printf("\nERROR\n");
+                }
                 break;
             case 4:
-                fourth(fd);
+                forthPoint(fd);
                 break;
             case 5:
-                fifth(fd);
+                fifthPoint(fd);
                 break;
             case 6:
-                sixth(fd);
+                sixthPoint(fd);
                 break;
             case 7:
-                seventh(fd);
+                seventhPoint(fd);
                 break;
             case 8:
-                eighth(fd);
+                eighthPoint(fd);
                 break;
             case 9:
-                ninth(fd);
+                ninethPoint(fd);
                 break;
             case 10:
-                tenth(fd);
+                tenthPoint(fd);
                 break;
             default:
-                printf("Opción seleccionada, INCORRECTA.");
+                if (x != 0)
+                {
+                    printf("\nError: Segmentation Fault! :/\n");
+                } 
+                else
+                {
+                    printf("\nBye.\n");
+                }
+                
                 break;
         }
+        printf("\nThe selected option was: ");
+        printf("%d\n", x);
     }
 }
 

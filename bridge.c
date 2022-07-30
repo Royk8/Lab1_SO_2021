@@ -26,6 +26,7 @@ MODULE_LICENSE("Dual BSD/GPL");
 
 LIST_HEAD(stack);
 LIST_HEAD(simple_list);
+LIST_HEAD(simple_list_2);
 LIST_HEAD(hight_Q);
 LIST_HEAD(low_Q);
 LIST_HEAD(middle_Q);
@@ -36,6 +37,14 @@ static void add_element_to_stack(char *node_element_msg){
 	strcpy(tmp_element->message, node_element_msg);
 	INIT_LIST_HEAD(&tmp_element->list);
 	list_add(&(tmp_element->list), &stack);
+}
+
+static void add_element_to_list(char *node_element_msg){
+	struct string_node *tmp_element;
+	tmp_element = kmalloc(sizeof(struct string_node), GFP_KERNEL);
+	strcpy(tmp_element->message, node_element_msg);
+	INIT_LIST_HEAD(&tmp_element->list);
+	list_add_tail(&(tmp_element->list), &simple_list);
 }
 
 static void add_to_hight_prior_q(char *node_element_msg){
@@ -62,45 +71,24 @@ static void add_to_middle_prior_q(char *node_element_msg){
 	list_add_tail(&(tmp_element->list), &middle_Q);
 }
 
-static void add_element_to_list(char *node_element_msg){
-	struct string_node *tmp_element;
-	tmp_element = kmalloc(sizeof(struct string_node), GFP_KERNEL);
-	strcpy(tmp_element->message, node_element_msg);
-	INIT_LIST_HEAD(&tmp_element->list);
-	list_add_tail(&(tmp_element->list), &simple_list);
-}
-
-void mystack_exit(void){
-    struct string_node *tmp_element;
-	struct list_head *watch, *next;
-	list_for_each_safe(watch, next, &stack){
-        	tmp_element = list_entry(watch, struct string_node, list);
-        	list_del(&(tmp_element->list));
-		kfree(tmp_element);
-     	}
-     	//kfree(&stack);
-}
-
-void mylist_exit(void){
-    struct string_node *tmp_element;
-	struct list_head *watch, *next;
-	list_for_each_safe(watch, next, &simple_list){
-        	tmp_element = list_entry(watch, struct string_node, list);
-        	list_del(&(tmp_element->list));
-		kfree(tmp_element);
-     	}
-     	//kfree(&simple_list);
-}
-
-void delete_list(void){
+static void invert_list(void)
+{
 	struct string_node *tmp_element;
 	struct list_head *watch, *next;
-	list_for_each_safe(watch, next, &simple_list){
-        	tmp_element = list_entry(watch, struct string_node, list);
-        	list_del(&(tmp_element->list));
-		kfree(tmp_element);
-    }
-    kfree(&simple_list);
+	list_for_each_safe(watch, next, &simple_list)
+	{
+		tmp_element = list_entry(watch, struct string_node, list);
+		printk(KERN_INFO "%s", tmp_element->message);
+		list_del(&(tmp_element->list));
+		list_add(&(tmp_element->list), &simple_list);
+	}
+
+	list_for_each_safe(watch, next, &simple_list)
+	{
+		tmp_element = list_entry(watch, struct string_node, list);
+		printk(KERN_INFO "%s", tmp_element->message);
+	}
+	printk(KERN_INFO "\n");
 }
 
 void rotate_list(void){
@@ -109,8 +97,6 @@ void rotate_list(void){
 	tmp_element = list_last_entry(&simple_list, struct string_node, list);	
 	list_del(&(tmp_element->list));	
 	list_add(&(tmp_element->list), &simple_list);
-
-	//kfree(tmp_ele);
 }
 
 static int search_duplicated(char *node_element_msg){
@@ -133,35 +119,39 @@ static int search_duplicated(char *node_element_msg){
 	return 0;
 }
 
-void concat_lists(void) {
+static void concat_lists(void) {
 	struct string_node *tmp_element;
 	struct list_head *watch, *next;
-	list_for_each_safe(watch, next, &simple_list)
+	list_for_each_safe(watch, next, &hight_Q)
 	{
 		tmp_element = list_entry(watch, struct string_node, list);
 		list_del(&(tmp_element->list));
-		list_add_tail(&(tmp_element->list), &stack);
+		list_add_tail(&(tmp_element->list), &simple_list);
 	}
 }
 
-static void invert_list(void)
-{
-	struct string_node *tmp_element;
+void mystack_exit(void){
+    struct string_node *tmp_element;
 	struct list_head *watch, *next;
-	list_for_each_safe(watch, next, &stack)
-	{
-		tmp_element = list_entry(watch, struct string_node, list);
-		printk(KERN_INFO "%s", tmp_element->message);
-		list_del(&(tmp_element->list));
-		list_add(&(tmp_element->list), &stack);
-	}
+	list_for_each_safe(watch, next, &stack){
+        tmp_element = list_entry(watch, struct string_node, list);
+        list_del(&(tmp_element->list));
+		kfree(tmp_element);
+    }
+	printk(KERN_INFO "\nSTACK VACIADA\n");
+    //kfree(&stack);
+}
 
-	list_for_each_safe(watch, next, &stack)
-	{
-		tmp_element = list_entry(watch, struct string_node, list);
-		printk(KERN_INFO "%s", tmp_element->message);
-	}
-	printk(KERN_INFO "\n");
+void mylist_exit(void){
+    struct string_node *tmp_element;
+	struct list_head *watch, *next;
+	list_for_each_safe(watch, next, &simple_list){
+        tmp_element = list_entry(watch, struct string_node, list);
+        list_del(&(tmp_element->list));
+		kfree(tmp_element);
+    }
+	printk(KERN_INFO "\nLISTA VACIADA\n");
+    //kfree(&stack);
 }
 
 struct bridge_dev *bridge_devices;	/* allocated in bridge_init_module */
@@ -237,9 +227,9 @@ static long bridge_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 	    printk(KERN_INFO "Stack succesfully created\n");
 	    break;
 	case BRIDGE_W_S:
-        raw_copy_from_user(message, (char *)arg, 100);
+		raw_copy_from_user(message, (char *)arg, 100);
 	    add_element_to_stack(message);
-        printk(KERN_INFO "Element succesfully added to the stack\n");
+		printk(KERN_INFO "Element succesfully added to the stack\n");
 	    break;
 	case BRIDGE_R_S:
 	    tmp_element = list_first_entry(&stack, struct string_node, list);
@@ -256,18 +246,16 @@ static long bridge_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 	    printk(KERN_INFO "Stack state succesfully sended!!!\n");
 	    break;
 	case BRIDGE_DESTROY_S:
-            printk(KERN_INFO "message %s\n", "bla12");
+            mystack_exit();
 	    break;
-
 	case BRIDGE_CREATE_L:
-		LIST_HEAD(simple_list);
-        printk(KERN_INFO "message %s\n", "bla13");
-	    break;
+             printk(KERN_INFO "message %s\n", "bla13");
+	     break;
 	case BRIDGE_W_L:
-        raw_copy_from_user(message, (char *)arg, 100);
+		raw_copy_from_user(message, (char *)arg, 100);
 	    add_element_to_list(message);
-        printk(KERN_INFO "Element succesfully added to the simple list\n");
-	    break;
+		printk(KERN_INFO "Element succesfully added to the simple list\n");
+	     break;
 	case BRIDGE_R_L:
         tmp_element = list_first_entry(&simple_list, struct string_node, list);
 		list_del(&(tmp_element->list));
@@ -276,12 +264,11 @@ static long bridge_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 	    break;
 	case BRIDGE_INVERT_L:
 		invert_list();
-        printk(KERN_INFO "message %s\n", "bla16");
-	    break;
+		break;
 	case BRIDGE_ROTATE_L:
         rotate_list();
-        printk(KERN_INFO "message %d\n", data);
-	    break;
+		printk(KERN_INFO "message %d\n", data);
+		break;
 	case BRIDGE_CLEAN_L:
 		int result = 33;
         raw_copy_from_user(message, (char *)arg, 100);
@@ -298,11 +285,10 @@ static long bridge_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
              printk(KERN_INFO "message %s\n", "bla21");
 	     break;
 	case BRIDGE_CONCAT_L:
-	concat_lists();
-             printk(KERN_INFO "message %s\n", "bla22");
-	     break;
+        concat_lists();
+		break;
 	case BRIDGE_STATE_L:
-        if(list_empty(&simple_list) != 0){
+            if(list_empty(&simple_list) != 0){
 		return_value = 0;
 	    }else{
 		return_value = 1;
@@ -310,15 +296,13 @@ static long bridge_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 	    printk(KERN_INFO "Simple list state succesfully sended!!!\n");
 	    break;
 	case BRIDGE_DESTROY_L:
-		delete_list();
-        printk(KERN_INFO "message %s\n", "bla24");
+		mylist_exit();
 		break;
 	case BRIDGE_W_CS:
 	    raw_copy_from_user(&tmp, (struct complex_struct *)arg, sizeof(struct complex_struct));
 	    printk(KERN_INFO "Message1 %s\n", tmp.messages[0]);
             printk(KERN_INFO "Message2 %s\n", tmp.messages[1]);
             printk(KERN_INFO "Message3 %s\n", tmp.messages[2]);
-
     }
     return return_value;
 }
