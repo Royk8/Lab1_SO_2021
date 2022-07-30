@@ -333,34 +333,38 @@ void ninth(int fd){
 }
 
 void tenth(int fd){
-    printf("\n10. Return the greatest value on the list.");
-    printf("\nLet's add some items to the first list.\n");
-    char ans[100]; // Just don't init with 0 plz
+    printf("\nLlena tu lista.\n");
+    char ans[100];
     while(strcmp(ans, "EXIT") != 0){
-        printf("\nType the word you want to add to the list or EXIT.\n");
+        printf("\nIntroduce la palabra que quieres añadir a la lista o EXIT para salir.\n");
+        printf("\nEntrada: \n");
         scanf("%s", ans);
-        printf("\nInput: %s\n", ans);
-        if(strcmp(ans, "EXIT") != 0){
-            write_message(fd, BRIDGE_CLEAN_L, ans);
+        if(strcmp(ans, "EXIT") == 0){
+            break;
         }
+        write_message(fd, BRIDGE_W_L, ans);
+        printf("La palabra %s ha sido agregado a la lista\n", &ans[0]);
     }
-    printf("\nSu lista depurada:\n");
-    read_all_list_messages(fd);
-    // char  major[100];
-    // read_message(fd, BRIDGE_R_L, major);
+
+    //printf("\nLectura de la lista creada:\n");
+    //read_all_list_messages(fd);
+
+    char  major[100];
+    read_message(fd, BRIDGE_R_L, major);
    
-    // do{
-    //     char input[100];
-    //     read_message(fd, BRIDGE_R_L, input);
+    do{
+        char aux[100];
+        read_message(fd, BRIDGE_R_L, aux);
         
-    //     if(strcmp(input,major) > 0)
-    //     {
+        if(strcmp(aux,major) > 0) {
+            strcpy(major, aux);
+        }
+    } while( send_empty_command(fd, BRIDGE_STATE_L)!=0 );
+    
+    printf("\nEl valor mayor es: %s\n", major);
 
-    //         memcpy(major, input,strlen(input)+1);
-
-    //     }
-    // }while(send_empty_command(fd, BRIDGE_STATE_L)!=0);
-    // printf("\nThe greatest value is: %s\n", major);
+    //Limpiar lista
+    read_all_list_messages(fd);
 }
 
 void menu(int fd) {
