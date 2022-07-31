@@ -333,13 +333,13 @@ void seventh(int fd)
 
 void eighth(int fd){
     read_all_list_messages(fd);
-    char mess1[] = "primero";
-    char mess2[] = "segundo";
-    char mess3[] = "tercero";
-    char mess4[] = "cuarto";
-    char mess5[] = "quinto";
-    char mess6[] = "sexto";
-    char mess7[] = "septimo";
+    char mess1[] = "primero ";
+    char mess2[] = "segundo ";
+    char mess3[] = "tercero ";
+    char mess4[] = "cuarto ";
+    char mess5[] = "quinto ";
+    char mess6[] = "sexto ";
+    char mess7[] = "septimo ";
 
     printf("1: %s\n", &mess1[0]);
     printf("2: %s\n", &mess2[0]);

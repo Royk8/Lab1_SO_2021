@@ -129,6 +129,17 @@ static void concat_lists(void) {
 	}
 }
 
+void delete_list(void){
+	struct string_node *tmp_element;
+	struct list_head *watch, *next;
+	list_for_each_safe(watch, next, &simple_list){
+        	tmp_element = list_entry(watch, struct string_node, list);
+        	list_del(&(tmp_element->list));
+		kfree(tmp_element);
+    }
+    kfree(&simple_list);
+}
+
 static void delete_repeated_entries_list(void){
 	struct string_node *tmp_element;
 	struct list_head *watch, *next;
@@ -311,7 +322,7 @@ static long bridge_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 	    printk(KERN_INFO "Simple list state succesfully sended!!!\n");
 	    break;
 	case BRIDGE_DESTROY_L:
-		
+		delete_list();
 		break;
 	case BRIDGE_W_CS:
 	    raw_copy_from_user(&tmp, (struct complex_struct *)arg, sizeof(struct complex_struct));
