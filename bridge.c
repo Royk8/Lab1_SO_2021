@@ -142,7 +142,7 @@ static void delete_repeated_entries_list(void){
 }
 
 static void concat_two_list(void){
-	list_splice(&simple_list, &simple_list_2);
+	list_splice(&simple_list_2, &simple_list);
 }
 
 void mystack_exit(void){

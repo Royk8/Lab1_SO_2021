@@ -1,1 +1,1 @@
-cmd_/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/Module.symvers := sed 's/\.ko$$/\.o/' /home/vane/Desktop/Proyect_roy/Lab1_SO_2021/modules.order | scripts/mod/modpost -m -a  -o /home/vane/Desktop/Proyect_roy/Lab1_SO_2021/Module.symvers -e -i Module.symvers   -T -
+cmd_/home/royk/C/last/Lab1_SO_2021/Module.symvers := sed 's/\.ko$$/\.o/' /home/royk/C/last/Lab1_SO_2021/modules.order | scripts/mod/modpost -m -a  -o /home/royk/C/last/Lab1_SO_2021/Module.symvers -e -i Module.symvers   -T -

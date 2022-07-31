@@ -1,8 +1,8 @@
-cmd_/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.o := gcc -Wp,-MMD,/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/.bridge.o.d -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/11/include -I./arch/x86/include -I./arch/x86/include/generated  -I./include -I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/compiler-version.h -include ./include/linux/kconfig.h -I./ubuntu/include -include ./include/linux/compiler_types.h -D__KERNEL__ -fmacro-prefix-map=./= -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -fno-PIE -Werror=implicit-function-declaration -Werror=implicit-int -Werror=return-type -Wno-format-security -std=gnu89 -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -fcf-protection=none -m64 -falign-jumps=1 -falign-loops=1 -mno-80387 -mno-fp-ret-in-387 -mpreferred-stack-boundary=3 -mskip-rax-setup -mtune=generic -mno-red-zone -mcmodel=kernel -DCONFIG_X86_X32_ABI -Wno-sign-compare -fno-asynchronous-unwind-tables -mindirect-branch=thunk-extern -mindirect-branch-register -fno-jump-tables -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-address-of-packed-member -O2 -fno-allow-store-data-races -Wframe-larger-than=1024 -fstack-protector-strong -Wimplicit-fallthrough=5 -Wno-main -Wno-unused-but-set-variable -Wno-unused-const-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-stack-clash-protection -g -gdwarf-5 -pg -mrecord-mcount -mfentry -DCC_USING_FENTRY -Wdeclaration-after-statement -Wvla -Wno-pointer-sign -Wno-stringop-truncation -Wno-zero-length-bounds -Wno-array-bounds -Wno-stringop-overflow -Wno-restrict -Wno-maybe-uninitialized -fno-strict-overflow -fno-stack-check -fconserve-stack -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -Wno-packed-not-aligned -Wall -Wextra -Wno-unused-variable -Wno-unused-parameter -O -g -DSCULL_DEBUG  -fsanitize=bounds -fsanitize=shift -fsanitize=bool -fsanitize=enum  -DMODULE  -DKBUILD_BASENAME='"bridge"' -DKBUILD_MODNAME='"bridge"' -D__KBUILD_MODNAME=kmod_bridge -c -o /home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.o /home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.c
+cmd_/home/royk/C/last/Lab1_SO_2021/bridge.o := gcc -Wp,-MMD,/home/royk/C/last/Lab1_SO_2021/.bridge.o.d -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/11/include -I./arch/x86/include -I./arch/x86/include/generated  -I./include -I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/compiler-version.h -include ./include/linux/kconfig.h -I./ubuntu/include -include ./include/linux/compiler_types.h -D__KERNEL__ -fmacro-prefix-map=./= -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -fno-PIE -Werror=implicit-function-declaration -Werror=implicit-int -Werror=return-type -Wno-format-security -std=gnu89 -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -fcf-protection=none -m64 -falign-jumps=1 -falign-loops=1 -mno-80387 -mno-fp-ret-in-387 -mpreferred-stack-boundary=3 -mskip-rax-setup -mtune=generic -mno-red-zone -mcmodel=kernel -DCONFIG_X86_X32_ABI -Wno-sign-compare -fno-asynchronous-unwind-tables -mindirect-branch=thunk-extern -mindirect-branch-register -fno-jump-tables -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-address-of-packed-member -O2 -fno-allow-store-data-races -Wframe-larger-than=1024 -fstack-protector-strong -Wimplicit-fallthrough=5 -Wno-main -Wno-unused-but-set-variable -Wno-unused-const-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-stack-clash-protection -g -gdwarf-5 -pg -mrecord-mcount -mfentry -DCC_USING_FENTRY -Wdeclaration-after-statement -Wvla -Wno-pointer-sign -Wno-stringop-truncation -Wno-zero-length-bounds -Wno-array-bounds -Wno-stringop-overflow -Wno-restrict -Wno-maybe-uninitialized -fno-strict-overflow -fno-stack-check -fconserve-stack -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -Wno-packed-not-aligned -Wall -Wextra -Wno-unused-variable -Wno-unused-parameter -O -g -DSCULL_DEBUG  -fsanitize=bounds -fsanitize=shift -fsanitize=bool -fsanitize=enum  -DMODULE  -DKBUILD_BASENAME='"bridge"' -DKBUILD_MODNAME='"bridge"' -D__KBUILD_MODNAME=kmod_bridge -c -o /home/royk/C/last/Lab1_SO_2021/bridge.o /home/royk/C/last/Lab1_SO_2021/bridge.c
 
-source_/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.o := /home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.c
+source_/home/royk/C/last/Lab1_SO_2021/bridge.o := /home/royk/C/last/Lab1_SO_2021/bridge.c
 
-deps_/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.o := \
+deps_/home/royk/C/last/Lab1_SO_2021/bridge.o := \
   include/linux/compiler-version.h \
     $(wildcard include/config/CC_VERSION_TEXT) \
   include/linux/kconfig.h \
@@ -944,7 +944,7 @@ deps_/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.o := \
   include/linux/proc_fs.h \
     $(wildcard include/config/PROC_PID_ARCH_STATUS) \
   include/linux/seq_file.h \
-  /home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.h \
+  /home/royk/C/last/Lab1_SO_2021/bridge.h \
   include/linux/random.h \
     $(wildcard include/config/ARCH_RANDOM) \
   include/linux/once.h \
@@ -954,6 +954,6 @@ deps_/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.o := \
   include/linux/prandom.h \
   arch/x86/include/asm/archrandom.h \
 
-/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.o: $(deps_/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.o)
+/home/royk/C/last/Lab1_SO_2021/bridge.o: $(deps_/home/royk/C/last/Lab1_SO_2021/bridge.o)
 
-$(deps_/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.o):
+$(deps_/home/royk/C/last/Lab1_SO_2021/bridge.o):

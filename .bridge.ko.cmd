@@ -1,1 +1,1 @@
-cmd_/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.ko := ld -r -m elf_x86_64 --build-id=sha1  -T scripts/module.lds -o /home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.ko /home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.o /home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.mod.o;  true
+cmd_/home/royk/C/last/Lab1_SO_2021/bridge.ko := ld -r -m elf_x86_64 --build-id=sha1  -T scripts/module.lds -o /home/royk/C/last/Lab1_SO_2021/bridge.ko /home/royk/C/last/Lab1_SO_2021/bridge.o /home/royk/C/last/Lab1_SO_2021/bridge.mod.o;  true
