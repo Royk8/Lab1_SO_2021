@@ -300,7 +300,7 @@ static long bridge_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
              printk(KERN_INFO "message %s\n", "bla21");
 	     break;
 	case BRIDGE_CONCAT_L:
-        concat_two_lists();
+        concat_two_list();
 		break;
 	case BRIDGE_STATE_L:
             if(list_empty(&simple_list) != 0){

@@ -945,6 +945,14 @@ deps_/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.o := \
     $(wildcard include/config/PROC_PID_ARCH_STATUS) \
   include/linux/seq_file.h \
   /home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.h \
+  include/linux/random.h \
+    $(wildcard include/config/ARCH_RANDOM) \
+  include/linux/once.h \
+  include/uapi/linux/random.h \
+  include/linux/irqnr.h \
+  include/uapi/linux/irqnr.h \
+  include/linux/prandom.h \
+  arch/x86/include/asm/archrandom.h \
 
 /home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.o: $(deps_/home/vane/Desktop/Proyect_roy/Lab1_SO_2021/bridge.o)
 

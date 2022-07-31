@@ -39,21 +39,19 @@ __used __section("__versions") = {
 	{ 0xe1d71654, "cdev_del" },
 	{ 0xd0da656b, "__stack_chk_fail" },
 	{ 0xe2d5255a, "strcmp" },
+	{ 0xcbd4898c, "fortify_panic" },
 	{ 0xa916b694, "strnlen" },
+	{ 0x8bd65ff4, "kmem_cache_alloc_trace" },
+	{ 0xc83492ef, "kmalloc_caches" },
 	{ 0x21271fd0, "copy_user_enhanced_fast_string" },
 	{ 0x1f199d24, "copy_user_generic_string" },
 	{ 0xecdcabd2, "copy_user_generic_unrolled" },
 	{ 0x92997ed8, "_printk" },
 	{ 0x37a0cba, "kfree" },
-	{ 0xcbd4898c, "fortify_panic" },
-	{ 0x69acdf38, "memcpy" },
-	{ 0x754d539c, "strlen" },
-	{ 0x8bd65ff4, "kmem_cache_alloc_trace" },
-	{ 0xc83492ef, "kmalloc_caches" },
 	{ 0xbdfb6dbb, "__fentry__" },
 };
 
 MODULE_INFO(depends, "");
 
 
-MODULE_INFO(srcversion, "57984559F82F99AA7BCBE4C");
+MODULE_INFO(srcversion, "E955D56F159CBE7BFAFE39C");
