@@ -127,18 +127,49 @@ void first(int fd) {
 
 void second(int fd){
     char filePath[100];
-    printf("\n1. Aleatorizar el orden de la lista");
-    printf("\n   Ingresa el nombre del archivo");
+    printf("\n   Ingresa el nombre del archivo, con extension: ");
     scanf("%s", filePath);
+
     FILE * fp;
     char * line = NULL;
     size_t len = 0;
     ssize_t read;
-    int yo = 0;
 
-    write_message(fd, BRIDGE_W_L,(char *) &filePath);
-    read_message_param(fd, BRIDGE_R_L, &yo);
-    printf("ESTE NO ESSTA TERMINADO");
+    fp = fopen(filePath, "r");
+    if (fp == NULL) {
+        perror("Error al abrir archivo.");
+    }
+
+    printf("\n Contenido del archivo:\n");
+    while ((read = getline(&line, &len, fp)) != -1) {
+        printf("%s", line);
+        write_message(fd, BRIDGE_W_S, line);
+        int num = 0;
+
+    }
+    // char filePath[100];
+    // printf("\n1. Aleatorizar el orden de la lista");
+    // printf("\n   Ingresa el nombre del archivo");
+    // scanf("%s", filePath);
+    // FILE * fp;
+    // char * line = NULL;
+    // size_t len = 0;
+    // ssize_t read;
+    // int yo = 0;
+
+    // write_message(fd, BRIDGE_W_L,(char *) &filePath);
+
+    // int num = 0;
+    // switch (num)
+    // {
+    // case 0:
+        
+    //     break;
+    
+    // default:
+    //     break;
+    // }
+    // printf("ESTE NO ESSTA TERMINADO");
 }
 
 int third(int fd){
@@ -246,73 +277,57 @@ void fifth(int fd){
 
 void sixth(int fd)
 {
-    printf("\n6. Invert list.");
-    printf("\nLet's add some items.\n");
-    char ans[100]; // Just don't init with 0 plz
+    printf("\n6. Invertir lista.");
+    printf("\nArma tu lista.\n");
+    char ans[100];
     while(strcmp(ans, "EXIT") != 0){
-        printf("\nType the word you want to add to the list or EXIT.\n");
+        printf("\n Escribe una palabra o EXIT para salor.\n");
         scanf("%s", ans);
-        printf("\nInput: %s\n", ans);
+        printf("\nEntrada: %s\n", ans);
         if(strcmp(ans, "EXIT") != 0){
-            // CREATE LIST ITEMS LOGIC
+            
             strcat(ans,"\n");
             write_message(fd, BRIDGE_W_L, ans);
         }
     }
-    printf("\nInverted list:\n");
+    printf("\nInvertir lista:\n");
     send_empty_command(fd, BRIDGE_INVERT_L);
     read_all_list_messages(fd);
 }
 
 void seventh(int fd)
 {
-    printf("\n7. Concat list.");
-    printf("\nLet's add some items to the first list.\n");
-    char ans[100]; // Just don't init with 0 plz
+    printf("\nIngresa la lista A:.\n");
+    char ans[100]; 
     while(strcmp(ans, "EXIT") != 0){
-        printf("\nType the word you want to add to the list or EXIT.\n");
+        printf("\nIntroduce la palabra que quieres añadir a la lista o EXIT para salir.\n");
         scanf("%s", ans);
-        printf("\nInput: %s\n", ans);
+        printf("\nEntrada: %s\n", ans);
         if(strcmp(ans, "EXIT") != 0){
-            // CREATE LIST ITEMS LOGIC
+
             strcat(ans,"\n");
             write_message(fd, BRIDGE_W_L, ans);
         }
     }
-    printf("\nLet's add some items to the second list.\n");
+    printf("\nContinua ingresando la lista B.\n");
     ans[0] = 'n';
-    while(strcmp(ans, "EXIT") != 0){
-        printf("\nType the word you want to add to the list or EXIT.\n");
+    While(strcmp(ans, "EXIT") != 0){
+        printf("\nIntroduce la palabra que quieres añadir a la lista o EXIT para salir.\n");
         scanf("%s", ans);
-        printf("\nInput: %s\n", ans);
+        printf("\nEntrada: %s\n", ans);
         if(strcmp(ans, "EXIT") != 0){
-            // CREATE LIST ITEMS LOGIC
+
             strcat(ans,"\n");
-            write_message(fd, BRIDGE_W_HIGH_PRIOR_Q, ans);
+            write_message(fd, BRIDGE_W_L, ans);
         }
     }
-    printf("\nConcatenated lists:\n");
+    printf("\nLISTA CONCATENADA:\n");
     send_empty_command(fd, BRIDGE_CONCAT_L);
     read_all_list_messages(fd);
 }
 
 void eighth(int fd){
-    printf("\n8. Rotate list to right.");
-    printf("\nLet's add some items to the first list.\n");
-    char ans[100]; // Just don't init with 0 plz
-    while(strcmp(ans, "EXIT") != 0){
-        printf("\nType the word you want to add to the list or EXIT.\n");
-        scanf("%s", ans);
-        printf("\nInput: %s\n", ans);
-        if(strcmp(ans, "EXIT") != 0){
-            // CREATE LIST ITEMS LOGIC
-            strcat(ans,"\n");
-            write_message(fd, BRIDGE_W_L, ans);
-        }
-    }
-    printf("Rotated list.\n");
-    send_empty_command(fd, BRIDGE_ROTATE_L);
-    read_all_list_messages(fd);
+
 }
 
 void ninth(int fd){
@@ -325,11 +340,12 @@ void ninth(int fd){
         printf("\nInput: %s\n", ans);
         if(strcmp(ans, "EXIT") != 0){
             strcat(ans,"\n");
-            write_message(fd, BRIDGE_CLEAN_L, ans);
+            write_message(fd, BRIDGE_W_L, ans);
         }
     }
     printf("\nCleaned list:\n");
-    read_all_list_messages(fd);
+    send_empty_command(fd, BRIDGE_CLEAN_L);
+    read_all_list_messages(fd);    
 }
 
 void tenth(int fd){
@@ -365,6 +381,7 @@ void tenth(int fd){
 
     //Limpiar lista
     read_all_list_messages(fd);
+    //Despues de la segunda vez que se corra, da segmentation fault
 }
 
 void menu(int fd) {

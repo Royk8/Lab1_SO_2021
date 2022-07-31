@@ -12,6 +12,7 @@
 #include <linux/seq_file.h>
 #include <asm/uaccess.h>
 #include "bridge.h"
+#include <linux/random.h>
 
 int bridge_major =   BRIDGE_MAJOR;
 int bridge_minor =   0;
@@ -46,6 +47,13 @@ static void add_element_to_list(char *node_element_msg){
 	INIT_LIST_HEAD(&tmp_element->list);
 	list_add_tail(&(tmp_element->list), &simple_list);
 }
+static void add_element_to_list_2(char *node_element_msg){
+	struct string_node *tmp_element;
+	tmp_element = kmalloc(sizeof(struct string_node), GFP_KERNEL);
+	strcpy(tmp_element->message, node_element_msg);
+	INIT_LIST_HEAD(&tmp_element->list);
+	list_add_tail(&(tmp_element->list), &simple_list_2);
+}
 
 static void add_to_hight_prior_q(char *node_element_msg){
 	struct string_node *tmp_element;
@@ -74,21 +82,14 @@ static void add_to_middle_prior_q(char *node_element_msg){
 static void invert_list(void)
 {
 	struct string_node *tmp_element;
-	struct list_head *watch, *next;
-	list_for_each_safe(watch, next, &simple_list)
+	struct list_head *watch, *prev;
+	list_for_each_prev_safe(watch, prev, &simple_list)
 	{
 		tmp_element = list_entry(watch, struct string_node, list);
 		printk(KERN_INFO "%s", tmp_element->message);
 		list_del(&(tmp_element->list));
-		list_add(&(tmp_element->list), &simple_list);
+		list_add_tail(&(tmp_element->list), &simple_list);
 	}
-
-	list_for_each_safe(watch, next, &simple_list)
-	{
-		tmp_element = list_entry(watch, struct string_node, list);
-		printk(KERN_INFO "%s", tmp_element->message);
-	}
-	printk(KERN_INFO "\n");
 }
 
 void rotate_list(void){
@@ -110,9 +111,7 @@ static int search_duplicated(char *node_element_msg){
 				printk(KERN_INFO "\nENCONTRÉ IGUALES\n");
 				cont = cont + 1;
 			}
-    	} if(cont < 1){
-			return 0;
-		} else {
+    	} if(cont > 1){
 			return 1;
 		}
 	}
@@ -128,6 +127,22 @@ static void concat_lists(void) {
 		list_del(&(tmp_element->list));
 		list_add_tail(&(tmp_element->list), &simple_list);
 	}
+}
+
+static void delete_repeated_entries_list(void){
+	struct string_node *tmp_element;
+	struct list_head *watch, *next;
+	list_for_each_safe(watch, next, &simple_list){
+		tmp_element = list_entry(watch, struct string_node, list);
+		if(search_duplicated(tmp_element->message) == 1){
+			list_del(&(tmp_element->list));
+			kfree(tmp_element);
+		}
+	}
+}
+
+static void concat_two_list(void){
+	list_splice(&simple_list, &simple_list_2);
 }
 
 void mystack_exit(void){
@@ -256,6 +271,11 @@ static long bridge_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 	    add_element_to_list(message);
 		printk(KERN_INFO "Element succesfully added to the simple list\n");
 	     break;
+	case BRIDGE_W_L2:
+		raw_copy_from_user(message, (char *)arg, 100);
+		add_element_to_list_2(message);
+		printk(KERN_INFO "Element succesfully added to the simple list\n");
+		break;
 	case BRIDGE_R_L:
         tmp_element = list_first_entry(&simple_list, struct string_node, list);
 		list_del(&(tmp_element->list));
@@ -270,13 +290,8 @@ static long bridge_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 		printk(KERN_INFO "message %d\n", data);
 		break;
 	case BRIDGE_CLEAN_L:
-		int result = 33;
-        raw_copy_from_user(message, (char *)arg, 100);
-		result = search_duplicated(message);
-	    if(result == 0){
-			add_element_to_list(message);
-		}
-	    break;
+		delete_repeated_entries_list();
+		printk(KERN_INFO "Lista limpia \n");
 	case BRIDGE_GREATER_VAL_L:
 	     //strcpy((char *)arg, "MensajePrueba");
              printk(KERN_INFO "message %s\n", "bla19");
@@ -285,7 +300,7 @@ static long bridge_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
              printk(KERN_INFO "message %s\n", "bla21");
 	     break;
 	case BRIDGE_CONCAT_L:
-        concat_lists();
+        concat_two_lists();
 		break;
 	case BRIDGE_STATE_L:
             if(list_empty(&simple_list) != 0){
@@ -296,7 +311,7 @@ static long bridge_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 	    printk(KERN_INFO "Simple list state succesfully sended!!!\n");
 	    break;
 	case BRIDGE_DESTROY_L:
-		mylist_exit();
+		
 		break;
 	case BRIDGE_W_CS:
 	    raw_copy_from_user(&tmp, (struct complex_struct *)arg, sizeof(struct complex_struct));

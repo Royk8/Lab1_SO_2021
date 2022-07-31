@@ -31,7 +31,7 @@
 #define BRIDGE_CONCAT_L _IO('p', 23)
 #define BRIDGE_STATE_L _IO('p', 24)
 #define BRIDGE_DESTROY_L _IO('p', 25)
-#define BRIDGE_PRINT_L _IO('p', 27)
+#define BRIDGE_W_L2 _IOW('p', 27, char *)
 
 #define BRIDGE_W_CS _IOW('p', 26, unsigned long*)
 
